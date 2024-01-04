@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TicTacToe.Views.GamePlayView"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:converters="clr-namespace:TicTacToe.Converters"
+    xmlns:customControls="clr-namespace:TicTacToe.CustomControls"
+    xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:viewModels="clr-namespace:TicTacToe.ViewModels"
+    x:DataType="viewModels:GamePlayViewModel"
+    SizeChanged="ContentPage_SizeChanged">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding TopRowHeight}" />
+            <RowDefinition Height="AUTO" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="AUTO" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label
+            FontSize="32"
+            HorizontalOptions="Center"
+            SemanticProperties.HeadingLevel="Level1"
+            Text="圈叉遊戲" />
+
+        <Label
+            Grid.Row="1"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Text="{Binding Instructions}" />
+
+        <VerticalStackLayout
+            Grid.Row="3"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <Grid
+                HeightRequest="{Binding GridSize, Mode=TwoWay}"
+                HorizontalOptions="Fill"
+                VerticalOptions="Fill"
+                WidthRequest="{Binding GridSize, Mode=TwoWay}">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  TOP LEFT  -->
+                <customControls:SquareControl
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    XorO_Command="{Binding LeftTopClickCommand}"
+                    XorO_Value="{Binding LeftTopChoice}" />
+
+                <!--  TOP MIDDLE  -->
+                <customControls:SquareControl
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    XorO_Command="{Binding CenterTopClickCommand}"
+                    XorO_Value="{Binding CenterTopChoice}" />
+
+                <!--  TOP RIGHT  -->
+                <customControls:SquareControl
+                    Grid.Row="0"
+                    Grid.Column="4"
+                    XorO_Command="{Binding RightTopClickCommand}"
+                    XorO_Value="{Binding RightTopChoice}" />
+
+                <!--  MIDDLE LEFT  -->
+                <customControls:SquareControl
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    XorO_Command="{Binding LeftMiddleClickCommand}"
+                    XorO_Value="{Binding LeftMiddleChoice}" />
+
+                <!--  CENTER  -->
+                <customControls:SquareControl
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    XorO_Command="{Binding CenterMiddleClickCommand}"
+                    XorO_Value="{Binding CenterMiddleChoice}" />
+
+                <!--  MIDDLE RIGHT  -->
+                <customControls:SquareControl
+                    Grid.Row="2"
+                    Grid.Column="4"
+                    XorO_Command="{Binding RightMiddleClickCommand}"
+                    XorO_Value="{Binding RightMiddleChoice}" />
+
+                <!--  BOTTOM LEFT  -->
+                <customControls:SquareControl
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    XorO_Command="{Binding LeftBottomClickCommand}"
+                    XorO_Value="{Binding LeftBottomChoice}" />
+
+                <!--  BOTTOM MIDDLE  -->
+                <customControls:SquareControl
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    XorO_Command="{Binding CenterBottomClickCommand}"
+                    XorO_Value="{Binding CenterBottomChoice}" />
+
+                <!--  BOTTOM RIGHT  -->
+                <customControls:SquareControl
+                    Grid.Row="4"
+                    Grid.Column="4"
+                    XorO_Command="{Binding RightBottomClickCommand}"
+                    XorO_Value="{Binding RightBottomChoice}" />
+
+                <!--  CHECKER GRID  -->
+                <Line
+                    Grid.Row="0"
+                    Grid.RowSpan="5"
+                    Grid.Column="1"
+                    Style="{StaticResource VerticalLine}" />
+
+                <Line
+                    Grid.Row="0"
+                    Grid.RowSpan="5"
+                    Grid.Column="3"
+                    Style="{StaticResource VerticalLine}" />
+
+                <Line
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="5"
+                    Style="{StaticResource HorizontalLine}" />
+
+                <Line
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="5"
+                    Style="{StaticResource HorizontalLine}" />
+
+                <!--  SHOW 3 IN A ROW  -->
+
+                <Line
+                    Grid.Row="0"
+                    Grid.RowSpan="5"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="7"
+                    HorizontalOptions="Fill"
+                    IsVisible="{Binding HasWinner}"
+                    Style="{StaticResource ThickLine}"
+                    VerticalOptions="Fill"
+                    X1="{Binding WinningX1}"
+                    X2="{Binding WinningX2}"
+                    Y1="{Binding WinningY1}"
+                    Y2="{Binding WinningY2}" />
+
+            </Grid>
+
+        </VerticalStackLayout>
+
+        <HorizontalStackLayout
+            Grid.Row="3"
+            HorizontalOptions="CenterAndExpand"
+            IsVisible="{Binding GameOver}"
+            VerticalOptions="CenterAndExpand">
+
+            <Button
+                Margin="12"
+                Command="{Binding PlayAgainClickCommand}"
+                FontSize="24"
+                Text="Play Again" />
+            <Button
+                Margin="12"
+                Command="{Binding QuitClickCommand}"
+                FontSize="24"
+                Text="Quit" />
+
+        </HorizontalStackLayout>
+
+
+    </Grid>
+</ContentPage>
